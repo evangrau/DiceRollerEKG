@@ -12,6 +12,9 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -51,6 +54,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 rollDice();
             }
         });
+    }
+
+    public void showHit(View view) {
+        TextView crit_hit = (TextView) findViewById(R.id.criticalHit);
+
+        //Toggle
+        if (crit_hit.getVisibility() == View.INVISIBLE)
+            crit_hit.setVisibility(View.VISIBLE);
+        else
+            crit_hit.setVisibility(View.INVISIBLE);
+    }
+    
+    public void showMiss(View view) {
+        TextView crit_miss = (TextView) findViewById(R.id.criticalMiss);
+
+        //Toggle
+        if (crit_miss.getVisibility() == View.INVISIBLE)
+            crit_miss.setVisibility(View.VISIBLE);
+        else
+            crit_miss.setVisibility(View.INVISIBLE);
     }
 
     private void rollDice() {

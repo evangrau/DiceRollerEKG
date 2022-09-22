@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">DiceRollerEKG</string>
     <string name="die_block">die</string>
+    <string name="crit_hit">Critical hit!</string>
+    <string name="crit_miss">Critical miss!</string>
 </resources>
