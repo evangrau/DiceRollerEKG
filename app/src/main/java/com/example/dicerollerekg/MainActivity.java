@@ -1,7 +1,5 @@
 package com.example.dicerollerekg;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
@@ -26,9 +24,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
     private boolean isAccelerometerSensorAvailable, isNotFirstRun = false;
-    private float lastX;
-    private float lastY;
-    private float lastZ;
+    private float lastX, lastY, lastZ;
     private Vibrator vibrator;
 
     @Override
@@ -56,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
     }
 
-    public void showHit(View view) {
-        TextView crit_hit = (TextView) findViewById(R.id.criticalHit);
+    public void showHit() {
+        TextView crit_hit = findViewById(R.id.criticalHit);
 
         //Toggle
         if (crit_hit.getVisibility() == View.INVISIBLE)
@@ -66,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             crit_hit.setVisibility(View.INVISIBLE);
     }
     
-    public void showMiss(View view) {
-        TextView crit_miss = (TextView) findViewById(R.id.criticalMiss);
+    public void showMiss() {
+        TextView crit_miss = findViewById(R.id.criticalMiss);
 
         //Toggle
         if (crit_miss.getVisibility() == View.INVISIBLE)
@@ -78,10 +74,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private void rollDice() {
         int randomNumber = rng.nextInt(6) + 1;
+        boolean hit, miss;
 
         switch (randomNumber) {
             case 1:
                 imageViewDice.setImageResource(R.drawable.dice1);
+                showMiss();
                 break;
             case 2:
                 imageViewDice.setImageResource(R.drawable.dice2);
@@ -97,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
             case 6:
                 imageViewDice.setImageResource(R.drawable.dice6);
+                showHit();
                 break;
         }
     }
@@ -115,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float shakeThreshold = 5f;
             if ((xDifference > shakeThreshold && yDifference > shakeThreshold) || (xDifference > shakeThreshold && zDifference > shakeThreshold) || (yDifference > shakeThreshold && zDifference > shakeThreshold)) {
                 vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                rollDice();
             }
         }
 
