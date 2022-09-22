@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DiceRollerEKG</string>
+    <string name="die_block">die</string>
 </resources>
