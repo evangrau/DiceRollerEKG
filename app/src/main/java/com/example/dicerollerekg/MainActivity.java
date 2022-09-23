@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private boolean isAccelerometerSensorAvailable, isNotFirstRun = false;
     private float lastX, lastY, lastZ;
     private Vibrator vibrator;
+    private MediaPlayer tap_roll, shake_roll, crit_sound, miss_sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        tap_roll = MediaPlayer.create(this, R.raw.tap_roll);
+        shake_roll = MediaPlayer.create(this, R.raw.shake_roll);
+        crit_sound = MediaPlayer.create(this, R.raw.hit);
+        miss_sound = MediaPlayer.create(this, R.raw.miss);
 
         if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -43,43 +49,57 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             isAccelerometerSensorAvailable = false;
         }
 
+//        tap_roll.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                tap_roll.reset();
+//                tap_roll.release();
+//            }
+//        });
+//        shake_roll.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                shake_roll.reset();
+//                shake_roll.release();
+//            }
+//        });
+//        crit_sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                crit_sound.reset();
+//                crit_sound.release();
+//            }
+//        });
+//        miss_sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                miss_sound.reset();
+//                miss_sound.release();
+//            }
+//        });
+
         imageViewDice = findViewById(R.id.image_view_dice);
         imageViewDice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 rollDice();
+                tap_roll.start();
             }
         });
     }
 
-    public void showHit() {
-        TextView crit_hit = findViewById(R.id.criticalHit);
-
-        //Toggle
-        if (crit_hit.getVisibility() == View.INVISIBLE)
-            crit_hit.setVisibility(View.VISIBLE);
-        else
-            crit_hit.setVisibility(View.INVISIBLE);
-    }
-    
-    public void showMiss() {
-        TextView crit_miss = findViewById(R.id.criticalMiss);
-
-        //Toggle
-        if (crit_miss.getVisibility() == View.INVISIBLE)
-            crit_miss.setVisibility(View.VISIBLE);
-        else
-            crit_miss.setVisibility(View.INVISIBLE);
-    }
-
     private void rollDice() {
         int randomNumber = rng.nextInt(20) + 1;
-        boolean hit, miss;
+        TextView crit_hit = findViewById(R.id.criticalHit);
+        TextView crit_miss = findViewById(R.id.criticalMiss);
+        crit_hit.setVisibility(View.INVISIBLE);
+        crit_miss.setVisibility(View.INVISIBLE);
 
         switch (randomNumber) {
             case 1:
                 imageViewDice.setImageResource(R.drawable.d20_1);
-                showMiss();
+                crit_miss.setVisibility(View.VISIBLE);
+                miss_sound.start();
                 break;
             case 2:
                 imageViewDice.setImageResource(R.drawable.d20_2);
@@ -137,7 +157,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
             case 20:
                 imageViewDice.setImageResource(R.drawable.d20_20);
-                showHit();
+                crit_hit.setVisibility(View.VISIBLE);
+                crit_sound.start();
                 break;
         }
     }
@@ -157,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if ((xDifference > shakeThreshold && yDifference > shakeThreshold) || (xDifference > shakeThreshold && zDifference > shakeThreshold) || (yDifference > shakeThreshold && zDifference > shakeThreshold)) {
                 vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
                 rollDice();
+                shake_roll.start();
             }
         }
 

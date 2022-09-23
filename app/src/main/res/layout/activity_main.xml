@@ -21,12 +21,12 @@
         android:id="@+id/image_view_dice"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:src="@drawable/dice1"
+        android:contentDescription="@string/die_block"
+        android:src="@drawable/d20_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/die_block" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/criticalMiss"
