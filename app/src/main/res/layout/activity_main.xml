@@ -8,9 +8,13 @@
 
     <TextView
         android:id="@+id/criticalHit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="211dp"
+        android:layout_height="40dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="@string/crit_hit"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="bold|italic"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,9 +34,14 @@
 
     <TextView
         android:id="@+id/criticalMiss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="227dp"
+        android:layout_height="43dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="@string/crit_miss"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="34sp"
+        android:textStyle="bold|italic"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

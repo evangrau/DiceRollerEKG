@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             isAccelerometerSensorAvailable = false;
         }
 
+        // These break the app so they're going to stay commented out
 //        tap_roll.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 //            @Override
 //            public void onCompletion(MediaPlayer mediaPlayer) {
